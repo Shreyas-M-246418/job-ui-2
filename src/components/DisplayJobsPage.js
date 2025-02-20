@@ -31,7 +31,7 @@ const DisplayJobsPage = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await axios.get('https://job-ui-server.onrender.com/api/public/jobs');
+        const response = await axios.get('https://job-server-2.onrender.com/api/public/jobs');
         setJobs(response.data);
         setLoading(false);
       } catch (error) {

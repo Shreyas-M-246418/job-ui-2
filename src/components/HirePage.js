@@ -6,6 +6,7 @@ import { API_BASE_URL } from '../utils/config';
 import '../styles/HirePage.css';
 import { webLlmService } from '../services/webLlmService';
 import WebLLMInitializer from '../components/WebLLMInitializer';
+import TransformerService from '../services/transformerService';
 
 const HirePage = () => {
   const { getToken } = useAuth();
@@ -73,15 +74,18 @@ const HirePage = () => {
       `.trim();
 
       // Proceed with job analysis with combined content
-      const analysisResult = await analyzeJob({
-        ...formData,
-        description: combinedDescription
-      });
+      const analysisResult = await TransformerService.generateCompanySummary(combinedDescription);
+      const spamCheck = await TransformerService.detectSpam(
+        combinedDescription,
+        formData.companyName,
+        formData.salaryRange
+      );
 
       const jobData = {
         ...formData,
-        companySummary: analysisResult.companySummary,
-        isSpam: analysisResult.isSpam
+        companySummary: analysisResult,
+        isSpam: spamCheck.isSpam,
+        spamExplanation: spamCheck.explanation
       };
 
       const token = getToken();

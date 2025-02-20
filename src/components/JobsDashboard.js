@@ -40,7 +40,7 @@ const JobsDashboard = () => {
 
   const fetchJobs = async () => {
     try {
-      const response = await axios.get('https://job-ui-server.onrender.com/api/jobs');
+      const response = await axios.get('https://job-server-2.onrender.com/api/jobs');
       setJobs(response.data);
       setLoading(false);
     } catch (error) {
