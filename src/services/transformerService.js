@@ -34,13 +34,17 @@ class TransformerService {
 
     const { tokenizer, model } = await this.initialize();
     const inputs = tokenizer(prompt, { return_tensors: "pt" });
+    let generatedText = '';
 
     const streamer = new TextStreamer(tokenizer, {
       skip_prompt: true,
       skip_special_tokens: true,
+      callback_function: (token) => {
+        generatedText += token;
+      }
     });
 
-    const { sequences } = await model.generate({
+    await model.generate({
       ...inputs,
       max_new_tokens: 500,
       do_sample: false,
@@ -48,7 +52,7 @@ class TransformerService {
       stopping_criteria: this.stopping_criteria,
     });
 
-    return tokenizer.decode(sequences[0], { skip_special_tokens: true });
+    return generatedText;
   }
 
   static async detectSpam(jobDescription, companyName, salary) {
@@ -63,13 +67,17 @@ class TransformerService {
 
     const { tokenizer, model } = await this.initialize();
     const inputs = tokenizer(prompt, { return_tensors: "pt" });
+    let generatedText = '';
 
     const streamer = new TextStreamer(tokenizer, {
       skip_prompt: true,
       skip_special_tokens: true,
+      callback_function: (token) => {
+        generatedText += token;
+      }
     });
 
-    const { sequences } = await model.generate({
+    await model.generate({
       ...inputs,
       max_new_tokens: 300,
       do_sample: false,
@@ -77,9 +85,8 @@ class TransformerService {
       stopping_criteria: this.stopping_criteria,
     });
 
-    const response = tokenizer.decode(sequences[0], { skip_special_tokens: true });
-    const isSpam = response.toLowerCase().includes('spam');
-    const explanation = response.split('\n')[1] || '';
+    const isSpam = generatedText.toLowerCase().includes('spam');
+    const explanation = generatedText.split('\n')[1] || '';
 
     return {
       isSpam,

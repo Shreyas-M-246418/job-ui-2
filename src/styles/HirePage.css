@@ -219,3 +219,36 @@
   color: #666;
   text-align: center;
 }
+
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-content {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.loading-content p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.loader {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 6px solid transparent;
+  border-right-color: #ffa500;
+  animation: l24 1s infinite linear;
+}

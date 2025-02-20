@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../styles/DisplayJobsPage.css';
 import JobDetails from './JobDetails';
+import { validateAlphaInput } from '../utils/inputValidation';
 
 const DisplayJobsPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -55,10 +56,14 @@ const DisplayJobsPage = () => {
   };
 
   const handleFilterChange = (e, field) => {
-    setFilters({
-      ...filters,
-      [field]: e.target.value
-    });
+    const value = field === 'title' || field === 'location' 
+      ? validateAlphaInput(e.target.value)
+      : e.target.value;
+    
+    setFilters(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   const handleUserTypeChange = (e) => {
@@ -179,6 +184,8 @@ const DisplayJobsPage = () => {
             value={filters.title}
             onChange={(e) => handleFilterChange(e, 'title')}
             className="search-input"
+            pattern="[A-Za-z\s/]+"
+            title="Only letters and spaces are allowed"
           />
           <input
             type="text"
@@ -186,6 +193,8 @@ const DisplayJobsPage = () => {
             value={filters.location}
             onChange={(e) => handleFilterChange(e, 'location')}
             className="search-input"
+            pattern="[A-Za-z\s]+"
+            title="Only letters and spaces are allowed"
           />
           <div className="filter-dropdown">
             <button className={`filter-button ${filters.userType.length > 0 ? 'has-selection' : ''}`}>

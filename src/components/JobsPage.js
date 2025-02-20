@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { API_BASE_URL } from '../utils/config';
 import { Plus } from 'lucide-react';
 import '../styles/JobsPage.css';
+import { validateAlphaInput } from '../utils/inputValidation';
 
 const JobsPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -81,10 +82,14 @@ const JobsPage = () => {
   }, [user]);
 
   const handleFilterChange = (e, field) => {
-    setFilters({
-      ...filters,
-      [field]: e.target.value
-    });
+    const value = field === 'title' || field === 'location' 
+      ? validateAlphaInput(e.target.value)
+      : e.target.value;
+    
+    setFilters(prev => ({
+      ...prev,
+      [field]: value
+    }));
   };
 
   const handleUserTypeChange = (e) => {
@@ -206,20 +211,24 @@ const JobsPage = () => {
     <div className="dashboard-container">
       <div className="search-filters">
         <div className="search-bar">
-          <input
-            type="text"
-            placeholder="Title/skill or Company"
-            value={filters.title}
-            onChange={(e) => handleFilterChange(e, 'title')}
-            className="search-input"
-          />
-          <input
-            type="text"
-            placeholder="Location"
-            value={filters.location}
-            onChange={(e) => handleFilterChange(e, 'location')}
-            className="search-input"
-          />
+        <input
+          type="text"
+          placeholder="Title/skill or Company"
+          value={filters.title}
+          onChange={(e) => handleFilterChange(e, 'title')}
+          className="search-input"
+          pattern="[A-Za-z\s/]+"
+          title="Only letters and spaces are allowed"
+        />
+        <input
+          type="text"
+          placeholder="Location"
+          value={filters.location}
+          onChange={(e) => handleFilterChange(e, 'location')}
+          className="search-input"
+          pattern="[A-Za-z\s]+"
+          title="Only letters and spaces are allowed"
+        />
           <div className="filter-dropdown">
             <button className={`filter-button ${filters.userType.length > 0 ? 'has-selection' : ''}`}>
               User Type {filters.userType.length > 0 && `(${filters.userType.length})`}
