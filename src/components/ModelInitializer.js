@@ -11,7 +11,8 @@ const ModelInitializer = ({ onInitialized }) => {
       try {
         await TransformerService.initialize((progress) => {
           setStatus(progress.status);
-          setProgress(progress.progress || 0);
+          const percentage = progress.progress ? (progress.progress).toFixed(2) : 0;
+          setProgress(percentage);
         });
         setIsInitialized(true);
         onInitialized();
@@ -31,7 +32,7 @@ const ModelInitializer = ({ onInitialized }) => {
       <div className="loader"></div>
       <div className="loading-content">
         <p>{status}</p>
-        {progress > 0 && <p>{(progress * 100).toFixed(2)}%</p>}
+        {progress > 0 && <p>{progress}%</p>}
       </div>
     </div>
   );

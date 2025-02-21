@@ -6,6 +6,7 @@ import { API_BASE_URL } from '../utils/config';
 import { Plus } from 'lucide-react';
 import '../styles/JobsPage.css';
 import { validateAlphaInput } from '../utils/inputValidation';
+import ValidatedSearchInput from './ValidatedSearchInput';
 
 const JobsPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -210,25 +211,22 @@ const JobsPage = () => {
   return (
     <div className="dashboard-container">
       <div className="search-filters">
-        <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Title/skill or Company"
-          value={filters.title}
-          onChange={(e) => handleFilterChange(e, 'title')}
-          className="search-input"
-          pattern="[A-Za-z\s/]+"
-          title="Only letters and spaces are allowed"
-        />
-        <input
-          type="text"
-          placeholder="Location"
-          value={filters.location}
-          onChange={(e) => handleFilterChange(e, 'location')}
-          className="search-input"
-          pattern="[A-Za-z\s]+"
-          title="Only letters and spaces are allowed"
-        />
+          <div className="search-bar">
+            <ValidatedSearchInput
+              placeholder="Title/skill or Company"
+              value={filters.title}
+              onChange={(e) => handleFilterChange(e, 'title')}
+              pattern="[A-Za-z\s/]+"
+              title="Only letters, spaces and slashes are allowed"
+              allowSlash={true}
+            />
+            <ValidatedSearchInput
+              placeholder="Location"
+              value={filters.location}
+              onChange={(e) => handleFilterChange(e, 'location')}
+              pattern="[A-Za-z\s]+"
+              title="Only letters, spaces and slashes are allowed"
+            />
           <div className="filter-dropdown">
             <button className={`filter-button ${filters.userType.length > 0 ? 'has-selection' : ''}`}>
               User Type {filters.userType.length > 0 && `(${filters.userType.length})`}

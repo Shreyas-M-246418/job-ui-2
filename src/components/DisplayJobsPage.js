@@ -3,6 +3,7 @@ import axios from 'axios';
 import '../styles/DisplayJobsPage.css';
 import JobDetails from './JobDetails';
 import { validateAlphaInput } from '../utils/inputValidation';
+import ValidatedSearchInput from './ValidatedSearchInput';
 
 const DisplayJobsPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -178,23 +179,20 @@ const DisplayJobsPage = () => {
     <div className="page-container">
       <div className="search-filters">
         <div className="search-bar">
-          <input
-            type="text"
+          <ValidatedSearchInput
             placeholder="Title/skill or Company"
             value={filters.title}
             onChange={(e) => handleFilterChange(e, 'title')}
-            className="search-input"
-            pattern="[A-Za-z\s/]+"
-            title="Only letters and spaces are allowed"
+            pattern="[A-Za-z\s/\\]+"
+            title="Only letters, spaces and slashes are allowed"
+            allowSlash={true}
           />
-          <input
-            type="text"
+          <ValidatedSearchInput
             placeholder="Location"
             value={filters.location}
             onChange={(e) => handleFilterChange(e, 'location')}
-            className="search-input"
             pattern="[A-Za-z\s]+"
-            title="Only letters and spaces are allowed"
+            title="Only letters, spaces and slashes are allowed"
           />
           <div className="filter-dropdown">
             <button className={`filter-button ${filters.userType.length > 0 ? 'has-selection' : ''}`}>

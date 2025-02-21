@@ -644,3 +644,21 @@ input[type="radio"] {
   align-items: center;
   gap: 0.5rem;
 }
+
+.search-input-container {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.input-error {
+  border-color: #ff4444;
+}
+
+.error-message {
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  color: #ff4444;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
