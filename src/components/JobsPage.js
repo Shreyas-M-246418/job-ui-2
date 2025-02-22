@@ -34,7 +34,7 @@ const JobsPage = () => {
     'Machine Learning'
   ];
 
-  const fetchJobs = async () => {
+  const fetchJobs = async (retryCount = 0) => {
     if (!user || !user.userId) {
       setLoading(false);
       setJobs([]);
@@ -60,14 +60,14 @@ const JobsPage = () => {
       setError(null);
     } catch (error) {
       console.error('Error fetching jobs:', error);
-      if (error.response?.status === 401) {
+      if (error.response?.status === 401 && retryCount < 3) {
         await checkAuth();
-        if (getToken()) {
-          fetchJobs();
-        } else {
-          setError('Your session has expired. Please log in again.');
-          navigate('/login-signup');
+        const newToken = getToken();
+        if (newToken) {
+          return fetchJobs(retryCount + 1);
         }
+        setError('Your session has expired. Please log in again.');
+        navigate('/login-signup');
       } else {
         setError('Failed to load jobs. Please try again.');
       }
