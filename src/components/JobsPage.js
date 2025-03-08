@@ -56,7 +56,11 @@ const JobsPage = () => {
         }
       );
       
-      setJobs(response.data);
+      // Sort jobs by createdAt date in descending order (newest first)
+      const sortedJobs = response.data.sort((a, b) => 
+        new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      setJobs(sortedJobs);
       setError(null);
     } catch (error) {
       console.error('Error fetching jobs:', error);

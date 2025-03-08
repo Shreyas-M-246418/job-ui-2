@@ -34,7 +34,11 @@ const DisplayJobsPage = () => {
     const fetchJobs = async () => {
       try {
         const response = await axios.get('https://job-server-2.onrender.com/api/public/jobs');
-        setJobs(response.data);
+        // Sort jobs by createdAt date in descending order (newest first)
+        const sortedJobs = response.data.sort((a, b) => 
+          new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setJobs(sortedJobs);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching jobs:', error);
