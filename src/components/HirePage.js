@@ -13,6 +13,8 @@ const HirePage = () => {
     companyName: '',
     location: '',
     domain: '',
+    customDomain: '',
+    skillsRequired: '',
     workType: '',
     employmentType: '',
     userType: '',
@@ -81,8 +83,12 @@ const HirePage = () => {
         formData.salaryRange
       );
 
+      // Use custom domain if provided, otherwise use selected domain
+      const finalDomain = formData.customDomain ? formData.customDomain : formData.domain;
+
       const jobData = {
         ...formData,
+        domain: finalDomain,
         companySummary: analysisResult,
         isSpam: spamCheck.isSpam,
         spamExplanation: spamCheck.explanation
@@ -145,23 +151,35 @@ const HirePage = () => {
                 </div>
 
                 <div className="form-group split">
-                  <select
-                    name="domain"
-                    value={formData.domain}
-                    onChange={handleChange}
-                    className="form-select"
-                  >
-                    
-                    <option value="">Domain</option>
-                    <option value="Frontend">Frontend</option>
-                    <option value="Backend">Backend</option>
-                    <option value="Full Stack">Full Stack</option>
-                    <option value="DevOps">DevOps</option>
-                    <option value="Mobile">Mobile</option>
-                    <option value="UI/UX">UI/UX</option>
-                    <option value="Data Science">Data Science</option>
-                    <option value="Machine Learning">Machine Learning</option>
-                  </select>
+                  <div className="domain-container">
+                    <select
+                      name="domain"
+                      value={formData.domain}
+                      onChange={handleChange}
+                      className="form-select"
+                    >
+                      <option value="">Domain</option>
+                      <option value="Frontend">Frontend</option>
+                      <option value="Backend">Backend</option>
+                      <option value="Full Stack">Full Stack</option>
+                      <option value="DevOps">DevOps</option>
+                      <option value="Mobile">Mobile</option>
+                      <option value="UI/UX">UI/UX</option>
+                      <option value="Data Science">Data Science</option>
+                      <option value="Machine Learning">Machine Learning</option>
+                      <option value="custom">Other (specify)</option>
+                    </select>
+                    {formData.domain === 'custom' && (
+                      <input
+                        type="text"
+                        name="customDomain"
+                        value={formData.customDomain}
+                        onChange={handleChange}
+                        className="form-input custom-domain-input"
+                        placeholder="Enter custom domain"
+                      />
+                    )}
+                  </div>
 
                   <select
                     name="workType"
@@ -205,6 +223,17 @@ const HirePage = () => {
                   <span className="helper-text">
                     Choose the user type to find the most suitable candidates
                   </span>
+                </div>
+
+                <div className="form-group">
+                  <input
+                    type="text"
+                    name="skillsRequired"
+                    value={formData.skillsRequired}
+                    onChange={handleChange}
+                    placeholder="Skills Required (comma separated)"
+                    className="form-input"
+                  />
                 </div>
 
                 <div className="form-group">
