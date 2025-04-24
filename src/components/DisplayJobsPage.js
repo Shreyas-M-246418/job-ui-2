@@ -4,6 +4,7 @@ import '../styles/DisplayJobsPage.css';
 import JobDetails from './JobDetails';
 import { validateAlphaInput } from '../utils/inputValidation';
 import ValidatedSearchInput from './ValidatedSearchInput';
+import { useNavigate } from 'react-router-dom';
 
 const DisplayJobsPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -30,6 +31,7 @@ const DisplayJobsPage = () => {
     'Data Science',
     'Machine Learning'
   ];
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -316,6 +318,15 @@ const DisplayJobsPage = () => {
                 {type}
               </label>
             ))}
+          </div>
+          <div className="filter-section">
+            <h3>Resume Tools</h3>
+            <button 
+              className="resume-builder-button"
+              onClick={() => navigate('/resume-builder')}
+            >
+              Create Resume
+            </button>
           </div>
         </div>
         

@@ -6,6 +6,7 @@ import LoginSignupPage from './components/LoginSignupPage';
 import Logout from './components/Logout';
 import GitHubCallback from './components/GitHubCallback';
 import HirePage from './components/HirePage';
+import ResumeBuilderPage from './components/ResumeBuilderPage';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import './App.css';
 import axios from 'axios';
@@ -85,6 +86,10 @@ const App = () => {
                   <HirePage />
                 </PrivateRoute>
               }
+            />
+            <Route
+              path="/resume-builder"
+              element={<ResumeBuilderPage />}
             />
           </Routes>
         </div>
